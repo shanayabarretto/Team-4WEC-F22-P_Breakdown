@@ -11,7 +11,15 @@ def init():
     elevators = []
     for _ in range(data['elevators']):
         elevators.append(Elevator())
-    return elevators, floors, data
+    events = []
+    for event in data['events']:
+        list = []
+        list.append(event['time'])
+        list.append(event['start'])
+        list.append(event['end'])
+        events.append(list)
+
+    return elevators, floors, events
 
 def timediff():
     start = datetime.now()
@@ -43,11 +51,12 @@ def not_done(end):
 
 
 def main():
-    elevators, floors, data = init()
+    elevators, floors, events = init()
+    print(events)
     end = timediff()
     while (not_done(end)):
         # main code loop
-        print(data['events'][0]['time'])
+        print('hi')
     return 0
   
 
