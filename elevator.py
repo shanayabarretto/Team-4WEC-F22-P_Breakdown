@@ -26,6 +26,7 @@ class Elevator:
         return self.goingUp
 
     def timeToGetToFloor(self, floor):
+        hypotheticalTime = 0
         if self.currFloor - floor < 0:
             directionNeededIsUp = False
         else: directionNeededIsUp = True
