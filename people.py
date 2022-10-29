@@ -3,13 +3,12 @@ from os import times
 import time
 
 class People:
-    def __init__(self, startFloor, endFloor, startTime, pickedUp, delivered, direction):
+    def __init__(self, startFloor, endFloor, startTime, pickedUp, delivered):
         self.startFloor = startFloor
         self.endFloor = endFloor
         self.startTime = startTime
         self.pickedUp = False
         self.delivered = False
-        self.direction = direction
 
     def floorStart(self):
         return self.startFloor
