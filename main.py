@@ -1,4 +1,5 @@
 import json
+import time
 from datetime import datetime
 from elevator import Elevator
 from people import People
@@ -66,45 +67,36 @@ def secondspast(start):
     after  = (hours*3600) + (minutes*60) + seconds
     return after-before
 
-def pick_elevator(elevators, start, end, people_list, y):
-    # TODO: deal with it being at the top
+def pick_elevator(elevators, start, people_down, people_up, people_list, y):
     min_time = 10000
     curr_picked = None
     for x in elevators:
         curr_min_time = 10000
-        # calculate time for elevator to reach
-        # 1. who gets p1
-        # make sure one gets picked at the end
         if not x.isFull():
             if not x.queue:
                 curr_min_time = 0
-            elif x.currFloor <= start and x.goingUp == True:
-                curr_min_time
-            elif x.currFloor >= start and x.goingUp == False:
-                curr_min_time
+            elif x.currFloor <= start and x.goingUp == True and y in people_up:
+                curr_min_time = x.timeToGetToFloor(start)
+            elif x.currFloor >= start and x.goingUp == False and y in people_down:
+                curr_min_time = x.timeToGetToFloor(start)
 
             if curr_min_time < min_time:
                 min_time = curr_min_time
                 curr_picked = x
             
-            # check floor
-            # right direction- end of queue
-            # calculate itme
     if curr_picked is not None:
         people_list.remove(y)
-        # add it to the queue
+        if y in people_up:
+            people_up.remove(y)
+        else:
+            people_down.remove(y)
+        x.queue.append(y)
     return
 
 
 def move_elevator(elevator, done):
     while not done:
         while elevator.queue:
-            # while theres still people to be delivered
-            # find the next floor
-            # visit/pickup people
-            # go through people in queue- if they havent been picked up yet
-            
-            # find shortest path
             picked = None
             min_dist = 100000
             for person in elevator.queue:
@@ -115,13 +107,23 @@ def move_elevator(elevator, done):
                     if abs(person.endFloor-elevator.currFloor) < min_dist:
                         picked = person.endFloor
             # we have picked our destination
+            transition = elevator.timeToGetToFloor(picked)
+            if elevator.goingUp:
+                print("Elevator moving up")
+            else:
+                print("Elevator moving down")
+            time.sleep(transition)
             elevator.changeFloor(picked)
-            # TODO: waits?
+            time.sleep(10)
             for person in elevator.queue:
                 if person.pickedUp == False and elevator.currFloor == person.startFloor:
                     person.pickedUp = True
+                    print("Someone just entered the elevator")
+                    elevator.numOfPeople += 1
                 if person.delivered == False and elevator.currFloor == person.endFloor:
                     person.delivered = True
+                    print("Someone just exited the elevator")
+                    elevator.numOfPeople -= 1
                 if person.delivered == True:
                     elevator.queue.remove(person)
                     total = person.Total()
@@ -142,17 +144,27 @@ def main():
     while (not_done(end)):
         # main code loop
         people_list = []
+        people_up = []
+        people_down = []
         for x in events:
             sec = secondspast(start)
             while (sec < x[0]):
                 pass
             # event is coming in
-            people_list.append(People())
-            people_list[len(people_list) - 1].floorStart = x[1]
-            people_list[len(people_list) - 1].floorEnd = x[2]
+            startTime = datetime.now
+            person = People(x[1], x[2], startTime)
+            people_list.append(person)
+            # grouping into people who want to go up and people who want to go down
+            if people_list[len(people_list) - 1].direction == 1:
+                people_up[len(people_list) - 1].append(person)
+            else:
+                people_down.append(person)
+            
             for y in people_list:
-                pick_elevator(elevators, y.floorStart, y.floorEnd, people_list, y)
+                pick_elevator(elevators, y.floorStart, people_down, people_up, people_list, y)
     # do a while for everyone who is not picked up
+    while people_list:
+        pick_elevator(elevators, y.floorStart, people_down, people_up, people_list, y)
     done = True
     for thread in threads:
         thread.join()
