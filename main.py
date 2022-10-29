@@ -9,15 +9,16 @@ def init():
     data = json.load(file)
     floors = data['floors']
     elevators = []
-    for i in range(data['elevators']):
-        elevators.append(Elevator(i))
+    for _ in range(data['elevators']):
+        elevators.append(Elevator())
+    return elevators, floors, data
 
 def timediff():
     start = datetime.now()
     start_t = start.strftime("%H:%M:%S")
-    hours = start_t.split(':')[0]
-    minutes = start_t.split(':')[1]
-    seconds = start_t.split(':')[2]
+    hours = int(start_t.split(':')[0])
+    minutes = int(start_t.split(':')[1])
+    seconds = int(start_t.split(':')[2])
     if (seconds + 40) >= 60:
         minutes += 1
         seconds = 40 - (60 - seconds)
@@ -31,23 +32,22 @@ def timediff():
     return [hours, minutes, seconds]
 
 def not_done(end):
-    current = datetime.now
+    current = datetime.now()
     curr = current.strftime("%H:%M:%S")
-    hours = curr.split(':')[0]
-    minutes = curr.split(':')[1]
-    seconds = curr.split(':')[2]
+    hours = int(curr.split(':')[0])
+    minutes = int(curr.split(':')[1])
+    seconds = int(curr.split(':')[2])
     if (end[0] >= hours and end[1] >= minutes and end[2] >= seconds):
         return False
     return True
 
 
-
 def main():
-    init()
+    elevators, floors, data = init()
     end = timediff()
     while (not_done(end)):
         # main code loop
-        print("main")
+        print(data['events'][0]['time'])
     return 0
   
 
