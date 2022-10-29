@@ -1,16 +1,22 @@
 import time
 import threading
+from people import People
 
 class Elevator:
     def __init__(self):
         self.numOfPeople = 0
-        self.goingUp = False
+        self.goingUp = True
         self.currFloor = 0
+        self.people = []
+        self.queue = []
+        self.inMotion = False
     
-    def waitOnFloor():
+    def waitOnFloor(self):
+        self.inMotion = False
         pass
 
-    def transition():
+    def transition(self):
+        self.inMotion = True
         pass
 
     def isFull(self):
