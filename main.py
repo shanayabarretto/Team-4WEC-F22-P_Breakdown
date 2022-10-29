@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+from elevator import Elevator
 import sys
 
 def init():
@@ -46,6 +47,7 @@ def main():
     end = timediff()
     while (not_done(end)):
         # main code loop
+        print("main")
     return 0
   
 
