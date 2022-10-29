@@ -3,7 +3,7 @@ from os import times
 import time
 
 class People:
-    def __init__(self, startFloor, endFloor, startTime, pickedUp, delivered):
+    def __init__(self, startFloor, endFloor, startTime):
         self.startFloor = startFloor
         self.endFloor = endFloor
         self.startTime = startTime
@@ -25,6 +25,13 @@ class People:
 
     def timeStart(self):
         return self.startTime
+
+    def personDirection(self):
+        if ((self.floorEnd - self.floorStart) > 0):
+            direction = 1
+        else:
+            direction = 0
+        return direction
 
 
 
