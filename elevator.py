@@ -25,13 +25,13 @@ class Elevator:
     def isGoingUp(self):
         return self.goingUp
 
-    def timeToGetToFloor(self, data):
-        if self.currFloor - data['events'][0]['end'] < 0:
+    def timeToGetToFloor(self, floor):
+        if self.currFloor - floor < 0:
             directionNeededIsUp = False
         else: directionNeededIsUp = True
         if directionNeededIsUp != self.goingUp:
             hypotheticalTime+=10
-        hypotheticalTime+=(self.currFloor - data['events'][0]['end'])*3
+        hypotheticalTime+=(self.currFloor - floor*3)
         # Doesn't include partial floors (ie. 1 out of 3 seconds transition or 5 out 10 seconds at floor)
         return hypotheticalTime
 

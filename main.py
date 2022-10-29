@@ -99,7 +99,33 @@ def pick_elevator(elevators, start, end, people_list, y):
 def move_elevator(elevator, done):
     while not done:
         while elevator.queue:
-            print("hi")
+            # while theres still people to be delivered
+            # find the next floor
+            # visit/pickup people
+            # go through people in queue- if they havent been picked up yet
+            
+            # find shortest path
+            picked = None
+            min_dist = 100000
+            for person in elevator.queue:
+                if person.pickedUp == False:
+                    if abs(person.startFloor-elevator.currFloor) < min_dist:
+                        picked = person.startFloor
+                else:
+                    if abs(person.endFloor-elevator.currFloor) < min_dist:
+                        picked = person.endFloor
+            # we have picked our destination
+            elevator.changeFloor(picked)
+            # TODO: waits?
+            for person in elevator.queue:
+                if person.pickedUp == False and elevator.currFloor == person.startFloor:
+                    person.pickedUp = True
+                if person.delivered == False and elevator.currFloor == person.endFloor:
+                    person.delivered = True
+                if person.delivered == True:
+                    elevator.queue.remove(person)
+                    total = person.Total()
+                    print("I travelled from floor " + person.startFloor + "to " + person.endFloor + "in " + total + " seconds.")
 
 
 def main():
@@ -126,12 +152,11 @@ def main():
             people_list[len(people_list) - 1].floorEnd = x[2]
             for y in people_list:
                 pick_elevator(elevators, y.floorStart, y.floorEnd, people_list, y)
-
+    # do a while for everyone who is not picked up
     done = True
     for thread in threads:
         thread.join()
     return 0
   
 
-if __name__ == "__main__":
-    sys.exit(main())
+main()
