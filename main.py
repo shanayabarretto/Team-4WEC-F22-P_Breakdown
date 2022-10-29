@@ -1,6 +1,7 @@
 import json
 from datetime import datetime
 from elevator import Elevator
+from people import People
 import sys
 import threading
 
