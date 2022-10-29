@@ -124,6 +124,8 @@ def move_elevator(elevator, done):
                     person.delivered = True
                 if person.delivered == True:
                     elevator.queue.remove(person)
+                    total = person.Total()
+                    print("I travelled from floor " + person.startFloor + "to " + person.endFloor + "in " + total + " seconds.")
 
 
 def main():

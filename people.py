@@ -16,15 +16,6 @@ class People:
     def floorEnd(self):
         return self.endFloor
 
-    # not sure what to do for the timing exactly 
-    def start(self):
-        curr = datetime.now()
-
-    def totalTime(self, timePassed):
-        return timePassed - self.startTime
-
-    def timeStart(self):
-        return self.startTime
 
     def personDirection(self):
         if ((self.floorEnd - self.floorStart) > 0):
@@ -32,6 +23,20 @@ class People:
         else:
             direction = 0
         return direction
+
+    def Total(self):
+        end = datetime.now()
+        curr = end.strftime("%H:%M:%S")
+        start_t = self.startTime.strftime("%H:%M:%S")
+        s_hours = int(start_t.split(':')[0])
+        s_minutes = int(start_t.split(':')[1])
+        s_seconds = int(start_t.split(':')[2])
+        hours = int(curr.split(':')[0])
+        minutes = int(curr.split(':')[1])
+        seconds = int(curr.split(':')[2])
+        before = (s_hours*3600) + (s_minutes*60) + s_seconds
+        after  = (hours*3600) + (minutes*60) + seconds
+        return after-before
 
 
 
