@@ -155,7 +155,7 @@ def main():
             person = People(x[1], x[2], startTime)
             people_list.append(person)
             # grouping into people who want to go up and people who want to go down
-            if people_list[len(people_list) - 1].direction == 1:
+            if people_list[len(people_list) - 1].personDirection == 1:
                 people_up[len(people_list) - 1].append(person)
             else:
                 people_down.append(person)
