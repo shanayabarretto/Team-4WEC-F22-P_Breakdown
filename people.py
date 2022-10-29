@@ -32,6 +32,7 @@ class People:
             direction = 1
         else:
             direction = 0
+        return direction
 
 
 
